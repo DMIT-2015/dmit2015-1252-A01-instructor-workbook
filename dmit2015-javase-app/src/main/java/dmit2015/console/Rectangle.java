@@ -1,6 +1,6 @@
 package dmit2015.console;
 
-public class Rectangle {
+public class Rectangle implements Shape {
 
     // Define read only fields
     private final double length;
@@ -22,11 +22,13 @@ public class Rectangle {
         return width;
     }
 
+    @Override
     public double getArea() {
         return length * width;
     }
 
-    public double Perimeter() {
+    @Override
+    public double getPerimeter() {
         return 2 * (length + width);
     }
 }

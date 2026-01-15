@@ -1,8 +1,6 @@
 package dmit2015.console;
 
-import ca.nait.dmit.Main;
-
-public class Circle {
+public class Circle implements Shape {
 
     // Define field to track the radius of the Circle
     private double radius;
@@ -31,10 +29,12 @@ public class Circle {
         return radius * 2;
     }
 
+    @Override
     public double getArea() {
         return Math.PI * radius * radius;
     }
 
+    @Override
     public double getPerimeter() {
         return 2 * Math.PI * radius;
     }
