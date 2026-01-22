@@ -13,13 +13,14 @@ import org.omnifaces.util.Messages;
 
 /**
  * Application-scoped bean: one instance shared by all users.
- * Use for app-wide config, caches, or utilities. Avoid per-user UI state here.
+ * Use for app-wide config, caches, or utilities.
+ * Avoid per-user UI state here.
  */
-@Named("counterApp")
+@Named("counterService")
 @ApplicationScoped // Shared across everyone; not for per-user state
-public class FacesApp {
+public class CounterService {
 
-    private static final Logger LOG = Logger.getLogger(FacesApp.class.getName());
+    private static final Logger LOG = Logger.getLogger(CounterService.class.getName());
 
     @Getter
     @Setter
