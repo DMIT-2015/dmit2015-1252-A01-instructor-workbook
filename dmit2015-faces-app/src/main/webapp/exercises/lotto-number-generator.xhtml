@@ -8,18 +8,22 @@
         xmlns:o="http://omnifaces.org/ui">
 
     <!-- Page metadata for title, description, and keywords -->
-    <ui:param name="title" value="counter-applicationscoped"/>
+    <ui:param name="title" value="lotto-number-generator"/>
 
     <!-- Define main content for the page -->
     <ui:define name="maincontent">
         <div class="card">
-            <h1 role="heading" aria-level="1">Counter | ApplicationScoped</h1>
-            <h:form id="counter-applicationscoped_form" role="form">
-                <p:panel header="Welcome to Counter | ApplicationScoped">
+            <h1 role="heading" aria-level="1">Lotto Number Generator</h1>
+            <h:form id="lotto-number-generator_form" role="form">
+                <p:panel header="Welcome to Lotto Number Generator">
                     <!-- Add page-specific content here, e.g., PrimeFaces components -->
-                    <p:commandButton value="Increment Counter"
-                                     actionListener="#{counterService.onSubmit()}"
-                    />
+                    <div class="field">
+                        <p:outputLabel for="@next">Max Value</p:outputLabel>
+                        <p:inputNumber id="maxValue" value="#{lottoNumberGeneratorRequest.maxValue}" />
+                    </div>
+                    <p:commandButton value="Generate"
+                                     action="#{lottoNumberGeneratorRequest.onSubmit()}" />
+
                 </p:panel>
             </h:form>
         </div>
