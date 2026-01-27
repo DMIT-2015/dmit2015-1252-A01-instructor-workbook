@@ -24,6 +24,20 @@
                                      />
                         <p:message for="task" />
                     </div>
+                    <div class="field">
+                        <p:outputLabel for="@next">Priority</p:outputLabel>
+                        <p:selectOneMenu value="#{example3InputTextDataTableAndCommandButtonView.currentTask.priority}">
+                            <f:selectItems value="#{example3InputTextDataTableAndCommandButtonView.taskPriorties}"
+                                           var="item"
+                                           itemLabel="#{item}"
+                                           itemValue="#{item}" />
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="@next">Done</p:outputLabel>
+                        <p:selectBooleanCheckbox value="#{example3InputTextDataTableAndCommandButtonView.currentTask.done}" />
+                    </div>
+
                     <p:commandButton value="Add Task"
                                      action="#{example3InputTextDataTableAndCommandButtonView.onSubmitAddTask()}"
                                      update="@form taskTable"
@@ -40,6 +54,12 @@
                                  var="currentTask">
                         <p:column headerText="Description">
                             <h:outputText value="#{currentTask.description}" />
+                        </p:column>
+                        <p:column headerText="Priority">
+                            <h:outputText value="#{currentTask.priority}" />
+                        </p:column>
+                        <p:column headerText="Done">
+                            <p:selectBooleanCheckbox value="#{currentTask.done}" />
                         </p:column>
                         <p:column headerText="Action">
 <p:commandButton value="Delete"

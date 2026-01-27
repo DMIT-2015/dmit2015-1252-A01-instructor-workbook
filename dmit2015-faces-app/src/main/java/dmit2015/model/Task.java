@@ -11,4 +11,8 @@ public class Task {
     @Size(min = 3, max = 255,message = "Description must between {min} and {max} characters")
     private String description;
 
+    private TaskPriority priority;
+
+    private boolean done;
+
 }

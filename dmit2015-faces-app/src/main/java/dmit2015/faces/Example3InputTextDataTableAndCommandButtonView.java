@@ -1,6 +1,7 @@
 package dmit2015.faces;
 
 import dmit2015.model.Task;
+import dmit2015.model.TaskPriority;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
@@ -34,6 +35,10 @@ public class Example3InputTextDataTableAndCommandButtonView implements Serializa
     @Getter @Setter
     private Task currentTask = new Task();  // Task to add
 
+    public TaskPriority[] getTaskPriorties() {
+        return TaskPriority.values();
+    }
+
     @PostConstruct
     public void init() {
         // Seed the tasks with 5 random task
@@ -41,6 +46,8 @@ public class Example3InputTextDataTableAndCommandButtonView implements Serializa
         for(int count = 1; count <= 5; count++) {
             Task currentTask = new Task();
             currentTask.setDescription("Nuke " + faker.fallout().location());
+            currentTask.setPriority(TaskPriority.MEDIUM);
+            currentTask.setDone(faker.bool().bool());
             tasks.add(currentTask);
         }
     }
