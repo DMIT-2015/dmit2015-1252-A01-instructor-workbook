@@ -1,10 +1,12 @@
 package dmit2015.faces;
 
 import dmit2015.model.Task;
+import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
+import net.datafaker.Faker;
 import org.omnifaces.util.Messages;
 
 import java.io.Serial;
@@ -31,6 +33,22 @@ public class Example3InputTextDataTableAndCommandButtonView implements Serializa
 
     @Getter @Setter
     private Task currentTask = new Task();  // Task to add
+
+    @PostConstruct
+    public void init() {
+        // Seed the tasks with 5 random task
+        var faker = new Faker();
+        for(int count = 1; count <= 5; count++) {
+            Task currentTask = new Task();
+            currentTask.setDescription("Nuke " + faker.fallout().location());
+            tasks.add(currentTask);
+        }
+    }
+
+    public void onRemoveTask(Task selectedTask) {
+        tasks.remove(selectedTask);
+        Messages.addGlobalInfo("Removed task {0}", selectedTask);
+    }
 
     public void onSubmitAddTask() {
         try {
