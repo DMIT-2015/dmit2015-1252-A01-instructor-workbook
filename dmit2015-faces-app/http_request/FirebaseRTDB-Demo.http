@@ -1,0 +1,27 @@
+### GET request to example server
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=IntelliJ IDEA
+
+###
+
+# curl -X PUT -d '{
+#  "alanisawesome": {
+#    "name": "Alan Turing",
+#    "birthday": "June 23, 1912"
+#  }
+#}' 'https://docs-examples.firebaseio.com/fireblog/users.json'
+PUT https://dmit2015-1251-a01-swu-default-rtdb.firebaseio.com/fireblog/users.json
+Content-Type: application/json
+
+{
+  "alanisawesome": {
+    "name": "Alan Turing",
+    "birthday": "June 23, 1912"
+  }
+}
+
+### Get child of /fireblog
+GET https://dmit2015-1251-a01-swu-default-rtdb.firebaseio.com/fireblog.json
+
+### Get child of /fireblog/users/alanisawesome/birthday
+GET https://dmit2015-1251-a01-swu-default-rtdb.firebaseio.com/fireblog/users/alanisawesome/birthday.json

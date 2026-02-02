@@ -45,6 +45,4 @@ public class Task {
         return currentTask;
     }
 
-
-
 }
