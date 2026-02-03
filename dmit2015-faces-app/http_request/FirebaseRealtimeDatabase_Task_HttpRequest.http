@@ -14,7 +14,7 @@ Content-Type: application/json
 GET https://dmit2015-1251-a01-swu-default-rtdb.firebaseio.com/Task.json
 
 ### Read JSON data by path and primary key value
-@primaryKeyValue = -OkUZJmp-sfRTP1T9Oa8
+@primaryKeyValue = -OkZWeu_RRTOd9yPXs4H
 GET https://dmit2015-1251-a01-swu-default-rtdb.firebaseio.com/Task/{{primaryKeyValue}}.json
 
 ### Write JSON data - will replace all properties with the properties in the request body - if you miss a property it will be removed
