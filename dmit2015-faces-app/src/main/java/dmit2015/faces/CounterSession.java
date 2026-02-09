@@ -3,17 +3,14 @@ package dmit2015.faces;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
-
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import lombok.Getter;
 import lombok.Setter;
 import org.omnifaces.util.Messages;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Session-scoped backing bean: per-user state that persists for the HTTP session.
@@ -50,7 +47,7 @@ public class CounterSession implements Serializable {
 
     public void onSelected() {
         try {
-            // TODO: handle row selection, etc.
+
         } catch (Exception ex) {
             handleException(ex, "Unable to select item.");
         }

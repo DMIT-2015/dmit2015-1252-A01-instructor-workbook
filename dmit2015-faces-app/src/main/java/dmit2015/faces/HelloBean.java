@@ -22,7 +22,7 @@ public class HelloBean {
     }
 
     public String submit() {
-        // TODO: Add your business logic here
+
         return null; // or navigation outcome
     }
 }
