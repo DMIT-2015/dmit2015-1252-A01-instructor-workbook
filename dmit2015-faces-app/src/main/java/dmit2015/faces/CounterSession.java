@@ -47,7 +47,7 @@ public class CounterSession implements Serializable {
 
     public void onSelected() {
         try {
-
+            // TODO: handle row selection, etc.
         } catch (Exception ex) {
             handleException(ex, "Unable to select item.");
         }
