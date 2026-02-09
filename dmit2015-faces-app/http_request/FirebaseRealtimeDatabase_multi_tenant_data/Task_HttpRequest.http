@@ -1,0 +1,13 @@
+// Firebase Realtime Database stores JSON data in a JSON Tree structure
+
+### User1 should be able to read his own data
+//  "localId": "",
+@user1LocalId = actualLocalIdFromHttpRequest
+//   "idToken": "actualLocalIdFromHttpRequest",
+@user1IdToken = actualLocalIdFromHttpRequest
+GET https://dmit2015-1251-a01-swu-default-rtdb.firebaseio.com/multi_tenant_data/Task/{{user1LocalId}}.json?auth={{user1IdToken}}
+
+### User2 should not be able to read user1 data
+//   "idToken": "actualLocalIdFromHttpRequest",
+@user2IdToken = actualLocalIdFromHttpRequest
+GET https://dmit2015-1251-a01-swu-default-rtdb.firebaseio.com/multi_tenant_data/Task/{{user1LocalId}}.json?auth={{user2IdToken}}
