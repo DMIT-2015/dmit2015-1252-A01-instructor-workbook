@@ -73,41 +73,43 @@ public class Movie implements Serializable {
         updateTime = LocalDateTime.now();
     }
 
+    private static String unquote(String value) {
+        return value == null ? "" : value.replace("\"", "").trim();
+    }
+
     public static Optional<Movie> parseCsv(String line) {
-        Optional<Movie> optionalMovie = Optional.empty();
-        final var DELIMITER = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
-        String[] tokens = line.split(DELIMITER, -1);  // The -1 limit allows for any number of fields and not discard trailing empty fields
-        /**
-         * The order of the columns are:
-         * 0 - title
-         * 1 - releaseDate
-         * 2 - genre
-         * 3 - price
-         * 4 - rating
-         */
-        if (tokens.length == 5) {
-            Movie parsedMovie = new Movie();
-
-            try {
-                String title = tokens[0].replaceAll("\"","");
-                LocalDate releaseDate = LocalDate.parse(tokens[1]);
-                String genre = tokens[2].replaceAll("\"","");
-                BigDecimal price = BigDecimal.valueOf(Double.parseDouble(tokens[3]));
-                String rating = tokens[4].replaceAll("\"","");
-
-                parsedMovie.setTitle(title);
-                parsedMovie.setReleaseDate(releaseDate);
-                parsedMovie.setGenre(genre);
-                parsedMovie.setPrice(price);
-                parsedMovie.setRating(rating);
-
-                optionalMovie = Optional.of(parsedMovie);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+        if (line == null || line.isBlank()) {
+            return Optional.empty();
         }
 
-        return optionalMovie;
+        final String delimiter = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+        String[] tokens = line.split(delimiter, -1);
+
+        // Expected column order:
+        // 0 - title, 1 - releaseDate, 2 - genre, 3 - price, 4 - rating
+        if (tokens.length != 5) {
+            return Optional.empty();
+        }
+
+        try {
+            String title = unquote(tokens[0]);
+            LocalDate releaseDate = LocalDate.parse(tokens[1].trim());
+            String genre = unquote(tokens[2]);
+            BigDecimal price = new BigDecimal(tokens[3].trim());   // avoid Double.parseDouble precision issues
+            String rating = unquote(tokens[4]);
+
+            Movie movie = new Movie();
+            movie.setTitle(title);
+            movie.setReleaseDate(releaseDate);
+            movie.setGenre(genre);
+            movie.setPrice(price);
+            movie.setRating(rating);
+
+            return Optional.of(movie);
+        } catch (Exception ignored) {
+            // Parsing failed (invalid date/number/etc.) -> treat as bad CSV row
+            return Optional.empty();
+        }
     }
 }
 
