@@ -48,5 +48,15 @@ public class StudentRepositoryIT {
 
         // Assert
         assertEquals(3, students.size());
+
+        Student first = students.getFirst();
+        assertAll("first student",
+                () -> assertEquals("Lance", first.getFirstName()),
+                () -> assertEquals("Beuno", first.getLastName()));
+
+        Student last = students.getLast();
+        assertAll("last student",
+                () -> assertEquals("Praise", first.getFirstName()),
+                () -> assertEquals("Rebi John", first.getLastName()));
     }
 }

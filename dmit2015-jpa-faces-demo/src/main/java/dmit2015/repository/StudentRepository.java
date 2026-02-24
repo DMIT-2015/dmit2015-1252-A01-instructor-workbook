@@ -27,4 +27,13 @@ order by s.lastName, s.firstName
                 .getResultList();
     }
 
+    public long count() {
+        return entityManager.createQuery(
+                """
+select count(s)
+from Student s
+""", Long.class
+        )
+                .getSingleResult();
+    }
 }
