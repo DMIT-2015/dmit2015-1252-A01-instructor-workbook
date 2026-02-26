@@ -1,10 +1,13 @@
 package dmit2015.repository;
 
 import dmit2015.config.ApplicationConfig;
-import dmit2015.entity.Movie;
 import dmit2015.entity.Student;
 import dmit2015.entity.StudentInitializer;
+import jakarta.annotation.Resource;
 import jakarta.inject.Inject;
+import jakarta.transaction.NotSupportedException;
+import jakarta.transaction.SystemException;
+import jakarta.transaction.UserTransaction;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit5.container.annotation.ArquillianTest;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -19,9 +22,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ArquillianTest
 public class StudentRepositoryIT {
-
-    @Inject
-    private StudentRepository studentRepository;
 
     @Deployment
     static WebArchive createDeployment() {
@@ -41,6 +41,12 @@ public class StudentRepositoryIT {
                 .addAsResource("META-INF/beans.xml");
     }
 
+    @Inject
+    private StudentRepository studentRepository;
+
+    @Resource
+    private UserTransaction userTransaction;
+
     @Test
     void findAll_whenSeeded_returnsStudentsInExpectedOrder() {
         // Arrange and Act
@@ -56,7 +62,32 @@ public class StudentRepositoryIT {
 
         Student last = students.getLast();
         assertAll("last student",
-                () -> assertEquals("Praise", first.getFirstName()),
-                () -> assertEquals("Rebi John", first.getLastName()));
+                () -> assertEquals("Praise", last.getFirstName()),
+                () -> assertEquals("Rebi John", last.getLastName()));
     }
+
+    @Test
+    void add_WhenValid_persistsAndSetsCreateTime() throws SystemException, NotSupportedException {
+        userTransaction.begin();
+        try {
+            // Arrange
+            Student newStudent = new Student();
+            newStudent.setFirstName("Charisse");
+            newStudent.setLastName("Pelayo");
+
+            // Act
+            studentRepository.add(newStudent);
+
+            // Assert
+            Student savedStudent = studentRepository.findById(newStudent.getId());
+            assertAll("saved student",
+                    () -> assertEquals(newStudent.getFirstName(), savedStudent.getFirstName()),
+                    () -> assertEquals(newStudent.getLastName(), savedStudent.getLastName()),
+                    () -> assertNotNull(savedStudent.getCreateTime()));
+
+        } finally {
+            userTransaction.rollback();
+        }
+    }
+
 }

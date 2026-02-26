@@ -19,6 +19,10 @@ public class StudentRepository {
         entityManager.persist(newStudent);
     }
 
+    public Student findById(Integer id) {
+        return entityManager.find(Student.class, id);
+    }
+
     public List<Student> findAll() {
         return entityManager.createQuery(
                 """
