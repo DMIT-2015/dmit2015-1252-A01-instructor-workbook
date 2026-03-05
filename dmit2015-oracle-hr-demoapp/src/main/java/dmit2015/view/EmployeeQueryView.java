@@ -1,6 +1,7 @@
 package dmit2015.view;
 
 import dmit2015.entity.Department;
+import dmit2015.entity.Employee;
 import dmit2015.repository.HumanResourceRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
@@ -35,30 +36,25 @@ public class EmployeeQueryView implements Serializable {
     @Getter @Setter
     private Department selectedDepartment;
 
+    @Getter
+    private List<Employee> queryResults;
+
     public List<Department> completeDepartment(String query) {
         return hrRepository.departmentsBy("%" + query + "%");
     }
 
-
-    @PostConstruct // Runs after @Inject fields are initialized (once per view instance)
-    public void init() {
-        // Initialize view state (avoid heavy I/O here)
-        // Example: preload data for this view
-        // selectedEmployeeQuery = new EmployeeQuery();
-    }
-
-    public void onSubmit() {
+    public void onSearchByDepartment() {
         try {
-            // Messages.addGlobalInfo("Saved.");
+            queryResults = hrRepository.employeesByDepartmentId(selectedDepartment.getId());
+            Messages.addGlobalInfo("Query returned {0} results.", queryResults.size());
         } catch (Exception ex) {
-            handleException(ex, "Unable to process your request.");
+            handleException(ex,"onSearchDepartment method exception");
         }
     }
 
     public void onClear() {
-        // Reset view state
-
-        // selectedEmployeeQuery = null;
+        queryResults = null;
+        selectedDepartment = null;
     }
 
     /**
