@@ -265,6 +265,10 @@ deploy, redeploy, undeploy or run your application.  -->
                     <debug>true</debug>
                     <debugPort>8787</debugPort>
                     <debugSuspend>false</debugSuspend>
+
+                    <scripts>
+                        <script>./wildfly-scripts/configure-elytron.cli</script>
+                    </scripts>
                 </configuration>
 
                 <executions>

@@ -50,6 +50,13 @@
                             </p:submenu>
 
                             <p:menuitem value="Students" outcome="/students/index.xhtml" />
+
+                            <c:if test="${not empty request.userPrincipal}">
+                                <p:menuitem value="Logout #{request.userPrincipal.name}" action="#{oidcLogout.submit}" />
+                            </c:if>
+                            <c:if test="${empty request.userPrincipal}">
+                                <p:menuitem value="Login" outcome="/movies/create.xhtml" />
+                            </c:if>
                         </p:menubar>
                     </ui:insert>
                 </h:form>
