@@ -2,13 +2,11 @@ package dmit2015.view;
 
 import dmit2015.entity.Movie;
 import dmit2015.repository.MovieRepository;
-import lombok.Getter;
-import org.omnifaces.util.Messages;
-
-import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import lombok.Getter;
+import org.omnifaces.util.Messages;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -26,10 +24,12 @@ public class MovieListView implements Serializable {
     @Getter
     private List<Movie> movies;
 
-    @PostConstruct  // After @Inject is complete
+//    @PostConstruct  // After @Inject is complete
     public void init() {
         try {
             movies = movieRepository.findAll();
+        } catch (RuntimeException ex) {
+            Messages.addGlobalWarn(ex.getMessage());
         } catch (Exception ex) {
             Messages.addGlobalError(ex.getMessage());
         }
