@@ -3,8 +3,10 @@ package dmit2015.resource;
 import common.validation.JavaBeanValidator;
 import dmit2015.entity.Country;
 import dmit2015.dto.CountryDto;
+import dmit2015.entity.Region;
 import dmit2015.mapper.CountryMapper;
 import dmit2015.repository.CountryRepository;
+import dmit2015.repository.RegionRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.OptimisticLockException;
@@ -27,6 +29,9 @@ public class CountryDtoResource {
 
     @Inject
     private CountryRepository countryRepository;
+
+    @Inject
+    private RegionRepository regionRepository;
 
     @GET    // This method only accepts HTTP GET requests.
     public Response findAllCountrysCountrys() {
@@ -63,6 +68,10 @@ public class CountryDtoResource {
 
         try {
             // Persist the new Country into the database
+            if (dto.getRegionId() > 0) {
+                Region existingRegion = regionRepository.findById(dto.getRegionId()).orElseThrow();
+                newCountry.setRegion(existingRegion);
+            }
             countryRepository.add(newCountry);
         } catch (Exception ex) {
             // Return a HTTP status of "500 Internal Server Error" containing the exception message
@@ -109,6 +118,10 @@ public class CountryDtoResource {
         existingCountry.setCountryName(updatedCountry.getCountryName());
 
         try {
+            if (dto.getRegionId() > 0) {
+                Region existingRegion = regionRepository.findById(dto.getRegionId()).orElseThrow();
+                existingCountry.setRegion(existingRegion);
+            }
             countryRepository.update(existingCountry);
         } catch (OptimisticLockException ex) {
             return Response

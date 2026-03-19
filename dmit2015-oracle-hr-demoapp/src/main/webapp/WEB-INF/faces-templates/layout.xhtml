@@ -48,15 +48,13 @@
                                         icon="pi pi-search"
                                         url="#{request.contextPath}/employees/query.xhtml"/>
 
-                            <p:menuitem value="Regions"
-                                        icon="pi pi-users"
-                                        url="#{request.contextPath}/regions/manage-regions.xhtml"/>
-                            <!-- Example submenu scaffold
-                            <p:submenu label="Students" icon="pi pi-users">
-                              <p:menuitem value="List" icon="pi pi-list" outcome="/students/index"/>
-                              <p:menuitem value="Create" icon="pi pi-plus" outcome="/students/create"/>
+                            <p:submenu label="REST Client" icon="pi pi-file">
+                                <p:menuitem value="Regions" icon="pi pi-list"
+                                            url="#{request.contextPath}/regions/manage-regions.xhtml"/>
+                                <p:menuitem value="Countries" icon="pi pi-plus"
+                                            url="#{request.contextPath}/countries/manage-countries.xhtml"/>
                             </p:submenu>
-                            -->
+
                         </p:menubar>
                     </ui:insert>
                 </h:form>

@@ -1,6 +1,8 @@
 package dmit2015.view;
 
+import dmit2015.dto.CountryDto;
 import dmit2015.dto.RegionDto;
+import dmit2015.service.CountryDtoService;
 import dmit2015.service.RegionDtoService;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
@@ -18,36 +20,44 @@ import java.util.List;
  * This Jakarta Faces backing bean class contains the data and event handlers
  * to perform CRUD operations using a PrimeFaces DataTable configured to perform CRUD.
  */
-@Named("currentRegionDtoCrudView")
+@Named("currentCountryDtoCrudView")
 @ViewScoped // create this object for one HTTP request and keep in memory if the next is for the same page
-public class RegionDtoCrudView implements Serializable {
+public class CountryDtoCrudView implements Serializable {
+
+    @Inject
+    @Named("currentMicroprofileRestClientCountryDtoService")
+    private CountryDtoService countryDtoService;
 
     @Inject
     @Named("currentMicroprofileRestClientRegionDtoService")
-    private RegionDtoService regionDtoService;
+    private RegionDtoService regionService;
+
+    public List<RegionDto> getRegions() {
+        return regionService.getAllRegionDtos();
+    }
 
     /**
-     * The selected RegionDto instance to create, edit, update or delete.
+     * The selected CountryDto instance to create, edit, update or delete.
      */
     @Getter
     @Setter
-    private RegionDto selectedRegionDto;
+    private CountryDto selectedCountryDto;
 
     /**
-     * The unique name of the selected RegionDto instance.
+     * The unique name of the selected CountryDto instance.
      */
     @Getter
     @Setter
-    private Long selectedId;
+    private String selectedId;
 
     /**
-     * The list of RegionDto objects fetched from the data source
+     * The list of CountryDto objects fetched from the data source
      */
     @Getter
-    private List<RegionDto> regionDtos;
+    private List<CountryDto> countryDtos;
 
     /**
-     * Fetch all RegionDto from the data source.
+     * Fetch all CountryDto from the data source.
      * <p>
      * If FacesContext message sent from init() method annotated with @PostConstruct in the Faces backing bean class are not shown on page:
      * 1) Remove the @PostConstruct annotation from the Faces backing bean class
@@ -60,21 +70,20 @@ public class RegionDtoCrudView implements Serializable {
     @PostConstruct
     public void init() {
         try {
-            regionDtos = regionDtoService.getAllRegionDtos();
+            countryDtos = countryDtoService.getAllCountryDtos();
         } catch (Exception e) {
-            Messages.addGlobalError("Error getting regionDtos %s", e.getMessage());
+            Messages.addGlobalError("Error getting countryDtos %s", e.getMessage());
         }
     }
 
     /**
      * Event handler for the New button on the Faces crud page.
-     * Create a new selected RegionDto instance to enter data for.
+     * Create a new selected CountryDto instance to enter data for.
      */
     public void onOpenNew() {
-        selectedRegionDto = new RegionDto();
+        selectedCountryDto = new CountryDto();
         selectedId = null;
     }
-
 
     /**
      * Event handler for Save button to create or update data.
@@ -84,26 +93,26 @@ public class RegionDtoCrudView implements Serializable {
 
             // If selectedId is null then create new data otherwise update current data
             if (selectedId == null) {
-                RegionDto createdRegionDto = regionDtoService.createRegionDto(selectedRegionDto);
+                CountryDto createdCountryDto = countryDtoService.createCountryDto(selectedCountryDto);
 
                 // Send a Faces info message that create was successful
-                Messages.addGlobalInfo("Create was successful. {0}", createdRegionDto.getId());
+                Messages.addGlobalInfo("Create was successful. {0}", createdCountryDto.getId());
                 // Reset the selected instance to null
-                selectedRegionDto = null;
+                selectedCountryDto = null;
 
             } else {
-                regionDtoService.updateRegionDto(selectedRegionDto);
+                countryDtoService.updateCountryDto(selectedCountryDto);
 
                 Messages.addGlobalInfo("Update was successful");
 
             }
 
             // Fetch a list of objects from the data source
-            regionDtos = regionDtoService.getAllRegionDtos();
-            PrimeFaces.current().ajax().update("dialogs:messages", "form:dt-RegionDtos");
+            countryDtos = countryDtoService.getAllCountryDtos();
+            PrimeFaces.current().ajax().update("dialogs:messages", "form:dt-CountryDtos");
 
             // Hide the PrimeFaces dialog
-            PrimeFaces.current().executeScript("PF('manageRegionDtoDialog').hide()");
+            PrimeFaces.current().executeScript("PF('manageCountryDtoDialog').hide()");
         } catch (RuntimeException ex) { // handle application generated exceptions
             Messages.addGlobalError(ex.getMessage());
         } catch (Exception ex) {    // handle system generated exceptions
@@ -119,13 +128,13 @@ public class RegionDtoCrudView implements Serializable {
     public void onDelete() {
         try {
             // Get the unique name of the Json object to delete
-            selectedId = selectedRegionDto.getId();
-            regionDtoService.deleteRegionDtoById(selectedId);
+            selectedId = selectedCountryDto.getId();
+            countryDtoService.deleteCountryDtoById(selectedId);
             Messages.addGlobalInfo("Delete was successful for id of {0}", selectedId);
             // Fetch new data from the data source
-            regionDtos = regionDtoService.getAllRegionDtos();
+            countryDtos = countryDtoService.getAllCountryDtos();
 
-            PrimeFaces.current().ajax().update("dialogs:messages", "form:dt-RegionDtos");
+            PrimeFaces.current().ajax().update("dialogs:messages", "form:dt-CountryDtos");
         } catch (RuntimeException ex) { // handle application generated exceptions
             Messages.addGlobalError(ex.getMessage());
         } catch (Exception ex) {    // handle system generated exceptions

@@ -1,30 +1,29 @@
 ### Create a new entity
-POST http://localhost:8080/restapi/Countries
+POST http://localhost:8090/restapi/Countries
 Content-Type: application/json
 
 {
   "id": "AB",
-  "countryName": "Alberta"
+  "countryName": "Alberta",
+  "regionId": 10
 }
 
 ### GET All entity from REST API endpoint
-GET http://localhost:8080/restapi/Countries
+GET http://localhost:8090/restapi/Countries
 
 ### GET One entity from REST API endpoint
-GET http://localhost:8080/restapi/Countries/AB
+GET http://localhost:8090/restapi/Countries/AB
 
 ### UPDATE entity at the REST API endpoint - will replace all properties with the properties in the request body
-PUT http://localhost:8080/restapi/Countries/AB
+PUT http://localhost:8090/restapi/Countries/AB
 Content-Type: application/json
 
 {
   "id": "AB",
-  "countryName": "New Alberta"
+  "countryName": "New Alberta",
+  "regionId": 20
 }
 
 ### DELETE entity at the REST API endpoint
-DELETE http://localhost:8080/restapi/Countries/AB
+DELETE http://localhost:8090/restapi/Countries/AB
 
-{
-  "propertyName": "propertyValue"
-}

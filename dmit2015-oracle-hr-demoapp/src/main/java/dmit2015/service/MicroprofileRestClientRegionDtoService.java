@@ -11,7 +11,7 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
 import java.util.List;
 import java.util.Optional;
 
-@Named("currentMpRestClientRegionService")
+@Named("currentMicroprofileRestClientRegionDtoService")
 @ApplicationScoped
 public class MicroprofileRestClientRegionDtoService implements RegionDtoService{
 
