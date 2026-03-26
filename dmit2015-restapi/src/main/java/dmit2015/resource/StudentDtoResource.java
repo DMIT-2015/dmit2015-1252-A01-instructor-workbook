@@ -5,13 +5,19 @@ import dmit2015.entity.Student;
 import dmit2015.dto.StudentDto;
 import dmit2015.mapper.StudentMapper;
 import dmit2015.repository.StudentRepository;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.OptimisticLockException;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
+import org.eclipse.microprofile.jwt.Claim;
+import org.eclipse.microprofile.jwt.ClaimValue;
+import org.eclipse.microprofile.jwt.Claims;
 
 import java.net.URI;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -24,6 +30,14 @@ import java.util.stream.Collectors;
 // All methods in this class expects method parameters to contain data in JSON format
 @Produces(MediaType.APPLICATION_JSON)    // All methods in this class returns data in JSON format
 public class StudentDtoResource {
+
+    @Inject
+    @Claim(standard = Claims.upn)   // The username for the user.
+    private ClaimValue<Optional<String>> optionalUsername;
+
+    @Inject
+    @Claim(standard = Claims.groups)    // The roles that the subject is a member of.
+    private ClaimValue<Optional<Set<String>>> optionalGroups;
 
     @Inject
     private StudentRepository _studentRepository;
@@ -49,8 +63,14 @@ public class StudentDtoResource {
         return Response.ok(dto).build();
     }
 
+    @RolesAllowed({"Sales","Administration"})
     @POST    // This method only accepts HTTP POST requests.
     public Response createStudentStudent(StudentDto dto, @Context UriInfo uriInfo) {
+        String username = optionalUsername.getValue().orElseThrow();
+        Set<String> groups  = optionalGroups.getValue().orElseThrow();
+        IO.println("username " + username);
+        IO.println("groups " + groups.toString());
+
         Student newStudent = StudentMapper.INSTANCE.toEntity(dto);
 
         String errorMessage = JavaBeanValidator.validateBean(newStudent);
@@ -85,6 +105,7 @@ public class StudentDtoResource {
                 .build();
     }
 
+    @RolesAllowed({"Administration","Shipping"})
     @PUT            // This method only accepts HTTP PUT requests.
     @Path("{id}")    // This method accepts a path parameter and gives it a name of id
     public Response updateStudentStudent(@PathParam("id") Long id, StudentDto dto) {
@@ -131,6 +152,7 @@ public class StudentDtoResource {
         return Response.ok(updatedDto).build();
     }
 
+    @RolesAllowed({"Administration"})
     @DELETE            // This method only accepts HTTP DELETE requests.
     @Path("{id}")    // This method accepts a path parameter and gives it a name of id
     public Response deleteStudentStudent(@PathParam("id") Long id) {
