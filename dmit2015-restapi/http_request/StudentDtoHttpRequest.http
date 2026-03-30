@@ -1,12 +1,11 @@
 ### Create a new entity
 POST http://localhost:8090/restapi/StudentDtos
 Content-Type: application/json
-Authorization: Bearer {{sales_access_token}}
 
 {
-  "firstName": "Nematullah",
-  "lastName": "Mohibi",
-  "courseSection": "DMIT2015-A03"
+  "firstName": "Alex",
+  "lastName": "Knibb",
+  "courseSection": "DMIT2015-OE01"
 }
 
 ### GET All entity from REST API endpoint
