@@ -50,8 +50,8 @@ public class TodoItemRepository {
 
     public List<TodoItem> findAllByUsername(String username) {
         return _entityManager.createQuery(
-                "SELECT o FROM TodoItem o where o.username = :uname", TodoItem.class)
-                .setParameter("uname", username)
+                "SELECT o FROM TodoItem o where lower(o.username) = :uname", TodoItem.class)
+                .setParameter("uname", username.toLowerCase())
                 .getResultList();
     }
 
